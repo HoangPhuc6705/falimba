@@ -114,7 +114,7 @@ class KalimbaSheet {
   }
 
   sortNotes() {
-    this.sheet.sort((a, b) => a.x() - b.y());
+    this.sheet.sort((a, b) => a.x() - b.x());
   }
 
   setCopyAndCutStack(state: string) {
@@ -135,14 +135,30 @@ class KalimbaSheet {
     }
   }
 
-  paste(clockwise?: Konva.Group) {
-    if (this.copiedAndCutStack.length === 0) return;
-    this.copiedAndCutStack.sort((a, b) => a.x() - b.x())
-    const firstX = this.copiedAndCutStack[0].x();
-    this.copiedAndCutStack.forEach(dot => {
+  paste(clockwise?: Konva.Group): KalimbaDot[] | null {
+    if (this.copiedAndCutStack.length === 0) return null;
+    const clones = this.clone()
+
+    clones.sort((a, b) => a.x() - b.x())
+    const firstX = clones[0].x();
+    clones.forEach(dot => {
       dot.x(dot.x() - firstX + clockwise?.x()! + dot.radius())
       this.sheet.push(dot)
     })
+    return clones;
+  }
+
+  clone(): KalimbaDot[] {
+    return this.copiedAndCutStack.map(dot => new KalimbaDot({
+      note: dot.getNote(),
+      sound: dot.getSound()
+    }, {
+      x: dot.x(),
+      y: dot.y(),
+      width: dot.width(),
+      height: dot.height(),
+      fill: dot.fill(),
+    }))
   }
 
   public getCopiedAndCutStack() {

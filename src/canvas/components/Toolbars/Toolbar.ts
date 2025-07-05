@@ -33,8 +33,8 @@ toolbar.innerHTML = `
     </div>
     <div class="vertical-line"></div>
     <div class="tool align">
-        <div class="icon">
-            <i class="fa-solid fa-align-left" id="align-left"></i>
+        <div class="icon" id="align-left">
+            <i class="fa-solid fa-align-justify"></i>
         </div>
     </div>
 `
@@ -79,8 +79,7 @@ window.addEventListener('keydown', (event) => {
             changePlayButtonToStop()
             kalimbaTimeline.resetAndStartClockwise()
         } else {
-            changePlayButtonToStart()
-            kalimbaTimeline.resetAndStartClockwise()
+            kalimbaTimeline.getCanvasClockwise().x(kalimbaTimeline.getKeys().widthPerKey)
         }
     }
 
@@ -91,7 +90,7 @@ function handlePlayButton() {
     changePlayButton();
 }
 
-function changePlayButton () {
+function changePlayButton() {
     if (kalimbaTimeline.getIsPlay()) {
         changePlayButtonToStart()
     } else {

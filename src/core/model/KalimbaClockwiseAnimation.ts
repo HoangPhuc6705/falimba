@@ -3,7 +3,7 @@ import type { KalimbaTimeline } from "./KalimbaTimeline";
 import { startMultiSound, startSimpleSound } from "../audio/StartAudio";
 import type { Player } from "tone";
 
-interface TempNote {
+export interface TempNote {
   x: number,
   sound: Player,
   isPlay: boolean
@@ -113,6 +113,7 @@ class KalimbaClockwiseAnimation {
 
     // kiem tra vi tri kim dong ho va check nhung not nhac nam truoc
     for (let i = 0; i < this.matrix.length; ++i) {
+      if (this.matrix[i].length === 0) continue;
       const note = this.matrix[i][0];
       if (this.clockwise.x() >= note.x && !note.isPlay) {
         note.isPlay = true;
@@ -128,11 +129,11 @@ class KalimbaClockwiseAnimation {
 
   handleStartSound() {
     if (this.copySheet.length === 0) return;
-
     for (let i = 0; i < this.matrix.length; ++i) {
+      if (this.matrix[i].length === 0) continue;
       const note = this.matrix[i][0];
       if (this.clockwise.x() >= note.x && !note.isPlay) {
-        startSimpleSound(note.sound, 15)
+        startMultiSound(this.matrix[i], 15)
         note.isPlay = true;
         break;
       }
@@ -141,7 +142,7 @@ class KalimbaClockwiseAnimation {
   }
 
   createMatrixSheet(): TempNote[][] {
-    const sheetMatrix: TempNote[][] = []
+    let sheetMatrix: TempNote[][] = []
 
     let start = 0;
     let end = 1;

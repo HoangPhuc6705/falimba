@@ -613,8 +613,9 @@ class KalimbaTimeline {
   }
 
   paste() {
-    this.sheet?.paste(this.canvasClockwise)
-    this.sheet?.getCopiedAndCutStack().forEach(dot => {
+    const clones = this.sheet?.paste(this.canvasClockwise)
+    if (!clones) return;
+    clones.forEach(dot => {
       this.canvasCenter.add(dot);
     })
     this.canvasCenter.getLayer()?.draw()
@@ -677,6 +678,12 @@ class KalimbaTimeline {
       this.kalimbaClockwiseAnimation.delete()
       const { x } = this.getPosition();
       this.canvasClockwise.x(x)
+      const playButton: HTMLElement | null = document.querySelector('.play-pause .icon')!
+      playButton.innerHTML = `
+      <div class="icon">
+        <i class="fa fa-play"></i>
+      </div>
+      `
     })
 
     this.canvasHorizonGroup.on('mousemove', () => {
@@ -721,8 +728,10 @@ class KalimbaTimeline {
     if (this.kalimbaClockwiseAnimation.isStart()) {
       this.kalimbaClockwiseAnimation.animationStop()
       this.setClockwisePositionX(this.keys.widthPerKey)
+      this.isPlay = false;
     } else {
       this.setClockwisePositionX(this.keys.widthPerKey)
+      this.isPlay = true;
     }
   }
 
@@ -867,8 +876,8 @@ class KalimbaTimeline {
     this.bpm = bpm;
   }
 
-  setPlayNoActiveClockwise() {
-
+  setPlayNoActiveClockwise(state: boolean) {
+    this.isPlay = state
   }
 
   setIsPlay(isPlay: boolean): void {

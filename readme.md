@@ -22,9 +22,10 @@ D:\DOCUMENTS\FALIMBA-KALIMBA-SUDIO\SRC
 <p>1. Loi nut play (done) </p>
 <p>1. Loi keo not moi them vao vuot qua timeline (center) </p>
 <p>2. Loi drag area (done) </p>
-<p>3. Loi khong the phat dong bo am thanh duoc</p> 
+<p>3. Loi khong the phat dong bo am thanh duoc (done) </p> 
 <p>3. Loi kim dong ho (done)</p>
-<p>4. Loi copy paste</p>
+<p>4. Loi copy paste (done)</p>
+<p>4. Loi khong the phat nhac sau khi align</p>
 <h1>Mot so update</h1>
 <p>1. Nang cap tinh nang align</p>
 <p>2. Them thanh cuon</p>
