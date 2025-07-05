@@ -1,0 +1,130 @@
+@import url("@fontsource/inter/400.css");
+@import url("@fontsource/inter/500.css");
+@import url("@fontsource/inter/600.css");
+
+:root {
+  --font-theme: "Inter";
+  --text-color-theme: #313131;
+  --border-theme: #b7b7b7;
+  --icon-color: #707070;
+  --selection-color: #00bbfe;
+  --line-color: #f0f0f0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-theme), sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100vh;
+}
+
+header {
+  padding: 20px;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  border-bottom: 1px solid var(--border-theme);
+  color: var(--text-color-theme);
+}
+
+header nav ul {
+  display: flex;
+  gap: 40px;
+}
+
+li {
+  appearance: none;
+  list-style: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+  cursor: context-menu;
+}
+
+main {
+  flex: 1 1 auto;
+  height: calc(100vh - 60px);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+main #toolbar {
+  padding: 4px;
+  height: 40px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+i {
+  color: var(--icon-color);
+}
+
+#toolbar .tool {
+  display: flex;
+  gap: 4px;
+}
+
+.icon {
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 100ms;
+}
+
+.selectedTool {
+  background: var(--selection-color);
+}
+
+.selectedTool > i {
+  color: #ffffff;
+  transition: 100ms;
+}
+
+.selectedTool:hover {
+  background: var(--selection-color) !important;
+}
+
+.icon:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.vertical-line {
+  width: 1px;
+  height: 100%;
+  background: #bdbdbd;
+}
+
+main #app {
+  width: 100%;
+  height: calc(100% - 40px);
+}
