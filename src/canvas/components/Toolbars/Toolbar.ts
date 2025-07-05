@@ -74,6 +74,8 @@ window.addEventListener('keydown', (event) => {
     }
     if (key === ' ') {
         handlePlayButton()
+    } else if (key === '[') {
+        kalimbaTimeline.resetAndStartClockwise()
     }
 
 })

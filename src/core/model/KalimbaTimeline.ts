@@ -43,7 +43,6 @@ class KalimbaTimeline {
   protected clockwiseFocus: boolean;
   protected kalimbaClockwiseAnimation!: KalimbaClockwiseAnimation;
 
-
   constructor(obj: {
     keys: KalimbaKeys,
     ruler: KalimbaRuler,
@@ -96,12 +95,6 @@ class KalimbaTimeline {
     window.addEventListener('keydown', (event) => {
       if (event.key === 'Delete' || event.key === "Backspace") {
         this.sheet?.eraseAllSelectedNote()
-      } else if (event.key === ' ') { // space
-        if (!this.kalimbaClockwiseAnimation.isStart()) {
-          this.kalimbaClockwiseAnimation.animationStart();
-        } else {
-          this.kalimbaClockwiseAnimation.animationStop();
-        }
       } else if (event.key === 'a' && (event.metaKey || event.ctrlKey)) {
         this.sheet?.selectAllNote(this.style);
       } else if (event.key === 'x' && (event.metaKey || event.ctrlKey)) {
@@ -112,7 +105,6 @@ class KalimbaTimeline {
         this.paste()
       }
     })
-
   }
 
   public renderKeys(): Konva.Group | null {
@@ -248,6 +240,7 @@ class KalimbaTimeline {
         context.fillStrokeShape(shape)
       },
       fill: this.style.getClockwise(),
+      listening: false
     })
     const verticalLine = new Konva.Line({
       points: [
@@ -257,7 +250,7 @@ class KalimbaTimeline {
         this.keys.height!
       ],
       stroke: this.style.getClockwise(),
-      strokeWidth: 1.5,
+      strokeWidth: 1.8,
       listening: false
     })
     clockwiseGroup.add(triangle);
@@ -440,6 +433,7 @@ class KalimbaTimeline {
 
     this.canvasCenter.on('mouseup', () => {
       this.isMouseDown = false;
+      this.clockwiseFocus = false;
       if (this.newDot) {
         const y = this.newDot.y();
         const { pitch, valueY } = this.getPitch(y)
@@ -467,6 +461,17 @@ class KalimbaTimeline {
           this.areaRect = null;
         }
       }
+
+      this.canvasCenter.on('mouseleave', () => {
+        this.clockwiseFocus = false
+        if (this.areaRect) {
+          this.selectNoteWithDrag(this.area)
+          this.areaRect.destroy();
+          this.area = null;
+          this.areaRect = null;
+        }
+      })
+
       this.copiedDots = null;
       this.newDot = null;
       this.firstPos = null;
@@ -674,6 +679,18 @@ class KalimbaTimeline {
       this.canvasClockwise.x(x)
     })
 
+    this.canvasHorizonGroup.on('mousemove', () => {
+      if (this.clockwiseFocus) {
+        const { x } = this.getPosition()
+        this.canvasClockwise.x(x)
+      }
+    })
+    this.canvasHorizonGroup.on('mouseup', () => {
+      this.clockwiseFocus = false
+    })
+    this.canvasHorizonGroup.on('mouseleave', () => {
+      this.clockwiseFocus = false
+    })
   }
 
   setCanvasCenterPositionXWhenRun() {
@@ -698,6 +715,19 @@ class KalimbaTimeline {
     // this.canvasHorizonGroup.add(this.canvasCenter)
     // this.canvasHorizonGroup.add(this.canvasRuler)
     // this.canvasClockwise.moveToTop()
+  }
+
+  resetAndStartClockwise() {
+    if (this.kalimbaClockwiseAnimation.isStart()) {
+      this.kalimbaClockwiseAnimation.animationStop()
+      this.setClockwisePositionX(this.keys.widthPerKey)
+    } else {
+      this.setClockwisePositionX(this.keys.widthPerKey)
+    }
+  }
+
+  setClockwisePositionX(x: number) {
+    this.canvasClockwise.x(x)
   }
 
   // Getters
@@ -839,6 +869,11 @@ class KalimbaTimeline {
 
   setIsPlay(isPlay: boolean): void {
     this.isPlay = isPlay;
+    if (isPlay === true) {
+      this.kalimbaClockwiseAnimation.animationStart()
+    } else if (isPlay === false) {
+      this.kalimbaClockwiseAnimation.animationStop()
+    }
   }
 
   setStyle(style: KalimbaStyle): void {

@@ -64,11 +64,6 @@ class KalimbaClockwiseAnimation {
         this.animation.stop();
       };
 
-      // when clockwise run out of center range
-      if (this.clockwise.getAbsolutePosition().x >= this.containerWidth) {
-        this.timeline.setCanvasCenterPositionXWhenRun()
-      }
-
       // reset sheet if onchange
       if (this.timeline.getSheet()?.getSheet().length !== this.copySheet.length) {
         this.setup()
@@ -117,8 +112,8 @@ class KalimbaClockwiseAnimation {
     this.matrix = this.createMatrixSheet()
 
     // kiem tra vi tri kim dong ho va check nhung not nhac nam truoc
-    for (let i = 0; i < this.copySheet.length; ++i) {
-      const note = this.copySheet[i];
+    for (let i = 0; i < this.matrix.length; ++i) {
+      const note = this.matrix[i][0];
       if (this.clockwise.x() >= note.x && !note.isPlay) {
         note.isPlay = true;
       }
@@ -134,8 +129,8 @@ class KalimbaClockwiseAnimation {
   handleStartSound() {
     if (this.copySheet.length === 0) return;
 
-    for (let i = 0; i < this.copySheet.length; ++i) {
-      const note = this.copySheet[i];
+    for (let i = 0; i < this.matrix.length; ++i) {
+      const note = this.matrix[i][0];
       if (this.clockwise.x() >= note.x && !note.isPlay) {
         startSimpleSound(note.sound, 15)
         note.isPlay = true;
@@ -179,6 +174,7 @@ class KalimbaClockwiseAnimation {
   setCurrentX(x: number) {
     this.currentX = x;
   }
+
 
   isStart() {
     return this.start

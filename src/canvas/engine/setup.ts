@@ -20,7 +20,7 @@ const kalimbaTimeline = new KalimbaTimeline({
     },
     style: new KalimbaStyle({
         main: '#00bbfe',
-        clockwise: 'red',
+        clockwise: '#ef4444',
         line: '#ffffff',
         select: '#7c3aed',
         stroke: '#ffffff',
