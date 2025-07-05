@@ -867,6 +867,10 @@ class KalimbaTimeline {
     this.bpm = bpm;
   }
 
+  setPlayNoActiveClockwise() {
+
+  }
+
   setIsPlay(isPlay: boolean): void {
     this.isPlay = isPlay;
     if (isPlay === true) {

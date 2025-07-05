@@ -75,26 +75,44 @@ window.addEventListener('keydown', (event) => {
     if (key === ' ') {
         handlePlayButton()
     } else if (key === '[') {
-        kalimbaTimeline.resetAndStartClockwise()
+        if (kalimbaTimeline.getIsPlay()) {
+            changePlayButtonToStop()
+            kalimbaTimeline.resetAndStartClockwise()
+        } else {
+            changePlayButtonToStart()
+            kalimbaTimeline.resetAndStartClockwise()
+        }
     }
 
 })
 
 function handlePlayButton() {
     kalimbaTimeline.setIsPlay(!kalimbaTimeline.getIsPlay());
+    changePlayButton();
+}
+
+function changePlayButton () {
     if (kalimbaTimeline.getIsPlay()) {
-        playPause.innerHTML = `
-        <div class="icon">
-            <i class="fa fa-pause"></i>
-        </div>
-        `
+        changePlayButtonToStart()
     } else {
-        playPause.innerHTML = `
-        <div class="icon">
-            <i class="fa fa-play"></i>
-        </div>
-        `
+        changePlayButtonToStop()
     }
+}
+
+function changePlayButtonToStart() {
+    playPause.innerHTML = `
+    <div class="icon">
+        <i class="fa fa-pause"></i>
+    </div>
+    `
+}
+
+function changePlayButtonToStop() {
+    playPause.innerHTML = `
+    <div class="icon">
+        <i class="fa fa-play"></i>
+    </div>
+    `
 }
 
 const copyButton = document.getElementById('copy')!
